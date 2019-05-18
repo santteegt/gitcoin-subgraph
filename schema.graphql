@@ -1,0 +1,66 @@
+type BountyIssued @entity {
+  id: ID!
+  bountyId: BigInt! # uint256
+}
+
+type BountyActivated @entity {
+  id: ID!
+  bountyId: BigInt! # uint256
+  issuer: Bytes! # address
+}
+
+type BountyFulfilled @entity {
+  id: ID!
+  bountyId: BigInt! # uint256
+  fulfiller: Bytes! # address
+  _fulfillmentId: BigInt! # uint256
+}
+
+type FulfillmentUpdated @entity {
+  id: ID!
+  _bountyId: BigInt! # uint256
+  _fulfillmentId: BigInt! # uint256
+}
+
+type FulfillmentAccepted @entity {
+  id: ID!
+  bountyId: BigInt! # uint256
+  fulfiller: Bytes! # address
+  _fulfillmentId: BigInt! # uint256
+}
+
+type BountyKilled @entity {
+  id: ID!
+  bountyId: BigInt! # uint256
+  issuer: Bytes! # address
+}
+
+type ContributionAdded @entity {
+  id: ID!
+  bountyId: BigInt! # uint256
+  contributor: Bytes! # address
+  value: BigInt! # uint256
+}
+
+type DeadlineExtended @entity {
+  id: ID!
+  bountyId: BigInt! # uint256
+  newDeadline: BigInt! # uint256
+}
+
+type BountyChanged @entity {
+  id: ID!
+  bountyId: BigInt! # uint256
+}
+
+type IssuerTransferred @entity {
+  id: ID!
+  _bountyId: BigInt! # uint256
+  _newIssuer: Bytes! # address
+}
+
+type PayoutIncreased @entity {
+  id: ID!
+  _bountyId: BigInt! # uint256
+  _newFulfillmentAmount: BigInt! # uint256
+}
