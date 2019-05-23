@@ -1,3 +1,93 @@
+enum BountyStage {
+  DRAFT
+  ACTIVE
+  DEAD
+}
+
+enum UserType {
+  FUNDER
+  HUNTER
+}
+
+type Bounty @entity {
+  id: ID!
+  issuer: Bytes
+  fulfiller: Bytes!
+  deadline: BigInt
+  fulfillmentAmount: BigInt
+  paysTokens: Boolean
+  bountyStage: BountyStage
+  balance: BigInt
+  bountyDataHash: String
+  fulfillmentDataHash: String
+  bountyData: BountyData!
+  fulfillmentData: FulfillmentData!
+}
+
+type BountyData @entity {
+  id: ID!
+  bountyId: BigInt!
+  title: String
+  description: String
+  sourceFileName: String
+  sourceFileHash: String
+  sourceDirectoryHash: String
+  issuerName: String
+  issuerEmail: String
+  issuerGithubUsername: String
+  issuerAddress: String
+  projectType: String
+  permissionType: String
+  autoApproveWorkers: Boolean
+  hiringRightNow: String
+  jobDescription: String
+  fundingOrganisation: String
+  isFeatured: Boolean
+  repoType: String
+  featuringDate: BigInt
+  funders: [String!]
+  categories: [String!]
+  created: BigInt
+  webReferenceURL: String
+  feeAmount: BigDecimal
+  feeTxId: String
+  issueKeywords: String
+  experienceLevel: String
+  projectLength: String
+  bountyType: String
+  estimatedHours: String
+  reservedFor: String
+  tokenName: String
+  tokenAddress: String
+  expireDate: BigInt
+}
+
+type FulfillmentData @entity {
+  id: ID!
+  bountyId: BigInt!
+  accepted: Boolean
+  description: String
+  sourceFileName: String
+  sourceFileHash: String
+  sourceDirectoryHash: String
+  githubPRLink: String
+  hoursWorked: String
+  email: String
+  githubUsername: String
+  address: String
+}
+
+type Leaderboard @entity {
+  id: ID!
+  address: String!
+  githubUsername: String
+  name: String
+  userType: UserType!
+  tokenName: String!
+  totalBounties: BigInt!
+  totalAmount: BigInt!
+}
+
 type BountyIssued @entity {
   id: ID!
   bountyId: BigInt! # uint256

@@ -1,6 +1,8 @@
 {
-  "name": "gitcoin",
-  "license": "UNLICENSED",
+  "name": "gitcoin-subgraph",
+  "version": "0.0.1",
+  "repository": "https://github.com/santteegt/gitcoin-subgraph",
+  "license": "MIT",
   "scripts": {
     "codegen": "graph codegen",
     "build": "graph build",
@@ -11,6 +13,6 @@
   },
   "dependencies": {
     "@graphprotocol/graph-cli": "0.12.0",
-    "@graphprotocol/graph-ts": "0.11.0"
+    "@graphprotocol/graph-ts": "0.12.0"
   }
 }

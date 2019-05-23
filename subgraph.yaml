@@ -1,4 +1,6 @@
 specVersion: 0.0.1
+description: Gitcoin subgraph
+repository: https://github.com/santteegt/gitcoin-subgraph
 schema:
   file: ./schema.graphql
 dataSources:
@@ -13,41 +15,41 @@ dataSources:
       apiVersion: 0.0.2
       language: wasm/assemblyscript
       entities:
-        - BountyIssued
-        - BountyActivated
-        - BountyFulfilled
-        - FulfillmentUpdated
+        # - BountyIssued
+        # - BountyActivated
+        # - BountyFulfilled
+        # - FulfillmentUpdated
         - FulfillmentAccepted
-        - BountyKilled
-        - ContributionAdded
-        - DeadlineExtended
-        - BountyChanged
-        - IssuerTransferred
-        - PayoutIncreased
+        # - BountyKilled
+        # - ContributionAdded
+        # - DeadlineExtended
+        # - BountyChanged
+        # - IssuerTransferred
+        # - PayoutIncreased
       abis:
         - name: Contract
           file: ./abis/Contract.json
       eventHandlers:
-        - event: BountyIssued(uint256)
-          handler: handleBountyIssued
-        - event: BountyActivated(uint256,address)
-          handler: handleBountyActivated
-        - event: BountyFulfilled(uint256,address,uint256)
-          handler: handleBountyFulfilled
-        - event: FulfillmentUpdated(uint256,uint256)
-          handler: handleFulfillmentUpdated
+        # - event: BountyIssued(uint256)
+        #   handler: handleBountyIssued
+        # - event: BountyActivated(uint256,address)
+        #   handler: handleBountyActivated
+        # - event: BountyFulfilled(uint256,address,uint256)
+        #   handler: handleBountyFulfilled
+        # - event: FulfillmentUpdated(uint256,uint256)
+        #   handler: handleFulfillmentUpdated
         - event: FulfillmentAccepted(uint256,address,uint256)
           handler: handleFulfillmentAccepted
-        - event: BountyKilled(uint256,address)
-          handler: handleBountyKilled
-        - event: ContributionAdded(uint256,address,uint256)
-          handler: handleContributionAdded
-        - event: DeadlineExtended(uint256,uint256)
-          handler: handleDeadlineExtended
-        - event: BountyChanged(uint256)
-          handler: handleBountyChanged
-        - event: IssuerTransferred(uint256,address)
-          handler: handleIssuerTransferred
-        - event: PayoutIncreased(uint256,uint256)
-          handler: handlePayoutIncreased
+        # - event: BountyKilled(uint256,address)
+        #   handler: handleBountyKilled
+        # - event: ContributionAdded(uint256,address,uint256)
+        #   handler: handleContributionAdded
+        # - event: DeadlineExtended(uint256,uint256)
+        #   handler: handleDeadlineExtended
+        # - event: BountyChanged(uint256)
+        #   handler: handleBountyChanged
+        # - event: IssuerTransferred(uint256,address)
+        #   handler: handleIssuerTransferred
+        # - event: PayoutIncreased(uint256,uint256)
+        #   handler: handlePayoutIncreased
       file: ./src/mapping.ts
