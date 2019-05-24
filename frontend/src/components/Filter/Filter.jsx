@@ -15,46 +15,41 @@ const filterStyles = theme =>
     orderBySelect: {
       marginLeft: theme.spacing.unit,
     },
+    orderByText: {
+      marginLeft: theme.spacing.unit,
+    },
   })
 
 const Filter = ({
   classes,
-  search,
-  onToggleSearch,
-  orderBy,
-  onOrderBy,
+  address,
+  onAddress,
+  totalLeaders,
+  onTotalLeaders,
 }) => (
-  <Grid item>
-    <Grid container direction="row">
-      <FormControlLabel
-        control={
-          <TextField
-            value={search}
-            onChange={event => onToggleSearch && onToggleSearch(event.target.value)}
-          />
-        }
-        label="Search"
-        labelPlacement="start"
-      />
-      <FormControlLabel
-        control={
-          <Select
-            className={classes.orderBySelect}
-            value={orderBy}
-            onChange={event => onOrderBy && onOrderBy(event.target.value)}
-          >
-            <MenuItem value="bountyData.title">Title</MenuItem>
-            <MenuItem value="bountyData.description">Description</MenuItem>
-            <MenuItem value="fulfillmentAmount">Amount</MenuItem>
-            <MenuItem value="bountyData.tokenName">Token</MenuItem>
-            <MenuItem value="bountyData.experienceLevel">Experience</MenuItem>
-          </Select>
-        }
-        label="Order By:"
-        labelPlacement="start"
-      />
+    <Grid item>
+      <Grid container direction="row">
+        <FormControlLabel
+          control={
+              <Select
+                className={classes.orderBySelect}
+                value={totalLeaders}
+                onChange={event => onTotalLeaders && onTotalLeaders(event.target.value)}
+              >
+                <MenuItem value="5">5</MenuItem>
+                <MenuItem value="10">10</MenuItem>
+                <MenuItem value="20">20</MenuItem>
+                <MenuItem value="30">30</MenuItem>
+                <MenuItem value="40">40</MenuItem>
+                <MenuItem value="50">50</MenuItem>
+                <MenuItem value="100">100</MenuItem>
+              </Select>
+          }
+          label="Records"
+          labelPlacement="start"
+        />
+      </Grid>
     </Grid>
-  </Grid>
 )
 
 const StyledFilter = withStyles(filterStyles)(Filter)

@@ -36,16 +36,27 @@ const BountyData = ({ classes, bountyData, fulfillmentAmount }) => (
                 {bountyData.issuerGithubUsername ? (<Avatar className={classes.image} githubHandle={bountyData.issuerGithubUsername} size="125" />) : (<Avatar className={classes.image} name={bountyData.issuerName} size="125" />)}
             </Grid>
             <Grid item xs={11}>
-              <Typography color="textSecondary">{bountyData.title}</Typography>
+            <CardContent>
+              <Typography color="textSecondary">Title: {bountyData.title}</Typography>
               <Typography component="p">
-                {bountyData.description}
+                Description: {bountyData.description}
               </Typography>
               <Typography component="p">
-                {fulfillmentAmount} {bountyData.tokenName}
+                Amount: {(fulfillmentAmount / Math.pow(10, 18))} {bountyData.tokenName}
               </Typography>
               <Typography component="p">
-                {bountyData.experienceLevel}
+              Address: {bountyData.issuerAddress}
               </Typography>
+              {bountyData.issuerName &&
+              (<Typography component="p">
+                Founder: {bountyData.issuerName}
+              </Typography>)}
+              {bountyData.issuerGithubUsername &&
+              (<Typography component="p">
+                <a href={'https://github.com/' +bountyData.issuerGithubUsername}
+                ><img src="github-logo.png" width="25"/></a>
+              </Typography>)}
+            </CardContent>
             </Grid>
         </Grid>
 )

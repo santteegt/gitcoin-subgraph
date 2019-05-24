@@ -18,9 +18,12 @@ import {
 import './App.css'
 import Header from './components/Header'
 import Error from './components/Error'
-import Bounties from './components/Bounties'
+import Leaderboards from './components/Leaderboard'
 import BountiesData from './components/BountiesData'
+import KudosData from './components/KudosData'
 import Filter from './components/Filter'
+import LeadersFilter from './components/LeadersFilter'
+import KudosFilter from './components/KudosFilter'
 import PropTypes from 'prop-types';
 
 if (!process.env.REACT_APP_GRAPHQL_ENDPOINT) {
@@ -44,35 +47,24 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 })
 
+const LEADERBOARDS_QUERY = gql`
+    query leaderboards($where: Leaderboard_filter! , $orderBy: Leaderboard_orderBy!, $limit: Int){
+        leaderboards(first: $limit, where: $where, orderBy: $orderBy, orderDirection: desc) {
+            id
+            address
+            githubUsername
+            name
+            userType
+            tokenName
+            totalBounties
+            totalAmount
+        }
+    }
+`
+
 const BOUNTIES_QUERY = gql`
-    {
-        bounties(first: 10, orderBy: $orderBy, orderDirection: desc) {
-          id
-          issuer
-          fulfillmentAmount
-          bountyData {
-              issuerName
-              issuerGithubUsername
-          }
-        }
-    }
-`
-const BOUNTIES_QUERY_2 = gql`
-    {
-        bounties(first: 10, orderBy: $orderBy, orderDirection: desc) {
-          id
-          fulfiller
-          fulfillmentAmount
-          bountyData {
-              issuerName
-              issuerGithubUsername
-          }
-        }
-    }
-`
-const BOUNTIES_QUERY_3 = gql`
-    {
-        bounties(first:100, orderBy: $orderBy, where: $where, orderDirection: desc) {
+    query bounties($where: Bounty_filter! , $orderBy: Bounty_orderBy!, $limit: Int){
+        bounties(first:$limit, orderBy: $orderBy, where: $where, orderDirection: desc) {
           id
           fulfillmentAmount
           bountyData {
@@ -81,8 +73,21 @@ const BOUNTIES_QUERY_3 = gql`
               tokenName
               experienceLevel
               issuerName
+              issuerAddress
               issuerGithubUsername
           }
+        }
+    }
+`
+
+const KUDOS_QUERY = gql`
+    query kudos($where: Kudo_filter! , $orderBy: Kudo_orderBy!, $limit: Int){
+        kudos(first:$limit, orderBy: $orderBy, where: $where, orderDirection: desc) {
+          owner
+          price
+          tokenURI
+          totalFees
+          totalRevenue
         }
     }
 `
@@ -92,7 +97,12 @@ class App extends Component {
     super(props)
     this.state = {
       value: 0,
+      leadersOrder: 'totalAmount',
+      tokenFilter: 'ETH',
+      addressFilter: '',
+      totalLeaders: 10,
       orderBy: 'fulfillmentAmount',
+      kudoOrderBy: 'price',
       search: '',
     }
   }
@@ -106,7 +116,7 @@ class App extends Component {
   }
 
   render() {
-    const { value, orderBy, search } = this.state
+    const { value, leadersOrder, tokenFilter, addressFilter, totalLeaders, orderBy, kudoOrderBy, search } = this.state
 
     return (
       <ApolloProvider client={client}>
@@ -114,20 +124,37 @@ class App extends Component {
           <Grid container direction="column">
               <AppBar position="static">
                 <Tabs value={value} onChange={this.handleChange}>
-                  <Tab label="Top 10" />
+                  <Tab label="Leaderboard" />
                   <Tab label="Bounties" />
+                  <Tab label="Kudos" />
                 </Tabs>
               </AppBar>
               {value === 0 &&
                   <TabContainer>
                       <Grid container>
+                        <Grid item xs={12}>
+                        <LeadersFilter
+                        token={tokenFilter}
+                        onToken={field => this.setState(state => ({ ...state, tokenFilter: field }))}
+                        address={addressFilter}
+                        onAddress={field => this.setState(state => ({ ...state, addressFilter: field }))}
+                        orderBy={leadersOrder}
+                        onOrderBy={field => this.setState(state => ({ ...state, leadersOrder: field }))}
+                        totalLeaders={totalLeaders}
+                        onTotalLeaders={field => this.setState(state => ({ ...state, totalLeaders: parseInt(field) }))}
+                        />
+                        </Grid>
                         <Grid item xs={6}>
                           <Query
-                            query={BOUNTIES_QUERY}
+                            query={LEADERBOARDS_QUERY}
                             variables={{
                               where: {
+                                   ...(tokenFilter ? { tokenName: tokenFilter } : { }),
+                                   ...(addressFilter ? { address: addressFilter } : { }),
+                                  ...{ userType: "FUNDER" }
                               },
-                              orderBy: orderBy,
+                              orderBy: leadersOrder,
+                              limit: totalLeaders
                             }}
                           >
                             {({ data, error, loading }) => {
@@ -136,18 +163,22 @@ class App extends Component {
                               ) : error ? (
                                 <Error error={error} />
                               ) : (
-                                <Bounties bounties={data.bounties} />
+                                <Leaderboards leaderboards={data.leaderboards} userType="Founders" />
                               )
                             }}
                           </Query>
                         </Grid>
                         <Grid item xs={6}>
                           <Query
-                            query={BOUNTIES_QUERY_2}
+                            query={LEADERBOARDS_QUERY}
                             variables={{
                               where: {
+                                   ...(tokenFilter ? { tokenName: tokenFilter } : { }),
+                                   ...(addressFilter ? { address: addressFilter } : { }),
+                                  ...{ userType: "HUNTER" }
                               },
-                              orderBy: orderBy,
+                              orderBy: leadersOrder,
+                              limit: totalLeaders
                             }}
                           >
                             {({ data, error, loading }) => {
@@ -156,7 +187,7 @@ class App extends Component {
                               ) : error ? (
                                 <Error error={error} />
                               ) : (
-                                <Bounties bounties={data.bounties} />
+                                <Leaderboards leaderboards={data.leaderboards} userType="Hunters"/>
                               )
                             }}
                           </Query>
@@ -168,19 +199,17 @@ class App extends Component {
                           <Grid container>
                           <Grid item xs={12}>
                             <Filter
-                            orderBy={orderBy}
-                            search={search}
-                            onOrderBy={field => this.setState(state => ({ ...state, orderBy: field }))}
-                            onToggleSearch={field => this.setState(state => ({ ...state, search: field }))}
+                            totalLeaders={totalLeaders}
+                            onTotalLeaders={field => this.setState(state => ({ ...state, totalLeaders: parseInt(field) }))}
                             />
                             <Query
-                              query={BOUNTIES_QUERY_3}
+                              query={BOUNTIES_QUERY}
                               variables={{
                                 where: {
-                                    title_contains: search,
-                                    description_contains: search
+                                    ...(addressFilter ? { issuerAddress: addressFilter } : {}),
                                 },
                                 orderBy: orderBy,
+                                limit: totalLeaders,
                               }}
                             >
                                   {({ data, error, loading }) => {
@@ -190,6 +219,38 @@ class App extends Component {
                                       <Error error={error} />
                                     ) : (
                                       <BountiesData bounties={data.bounties} />
+                                    )
+                                  }}
+                                </Query>
+                            </Grid>
+                            </Grid>
+                      </TabContainer>}
+                  {value === 2 &&
+                      <TabContainer>
+                          <Grid container>
+                          <Grid item xs={12}>
+                            <KudosFilter
+                          orderBy={kudoOrderBy}
+                          onOrderBy={field => this.setState(state => ({ ...state, kudoOrderBy: field }))}
+                          totalLeaders={totalLeaders}
+                          onTotalLeaders={field => this.setState(state => ({ ...state, totalLeaders: parseInt(field) }))}
+                          />
+                            <Query
+                              query={KUDOS_QUERY}
+                              variables={{
+                                where: {
+                                },
+                                orderBy: kudoOrderBy,
+                                limit: totalLeaders,
+                              }}
+                            >
+                                  {({ data, error, loading }) => {
+                                    return loading ? (
+                                      <LinearProgress variant="query" style={{ width: '100%' }} />
+                                    ) : error ? (
+                                      <Error error={error} />
+                                    ) : (
+                                      <KudosData kudos={data.kudos} />
                                     )
                                   }}
                                 </Query>

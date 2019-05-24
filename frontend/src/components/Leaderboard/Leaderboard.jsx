@@ -24,24 +24,26 @@ const bountyStyles = theme =>
     },
   })
 
-const Bounty = ({ classes, id, issuer, fulfiller, bountyData, fulfillmentAmount }) => (
+const Leaderboard = ({ classes, id, address, githubUsername, name, userType, tokenName, totalBounties, totalAmount }) => (
   <Grid item xs={12}>
     <Card>
       <CardActionArea>
         <Grid container>
             <Grid item xs={3}>
-                {bountyData.issuerGithubUsername ? (<Avatar className={classes.image} githubHandle={bountyData.issuerGithubUsername} size="125" />) : (<Avatar className={classes.image} name={bountyData.issuerName} size="125" />)}
+                {githubUsername ? (<Avatar className={classes.image} githubHandle={githubUsername} size="125" />) : (<Avatar className={classes.image} name={name} size="125" />)}
             </Grid>
             <Grid item xs={9}>
                 <CardContent className={classes.info}>
                   <Typography color="textSecondary">ID</Typography>
                   <Typography component="p" className={classes.id}>
-                    {issuer && (issuer)}
-                    {fulfiller && (fulfiller)}
+                    {address}
                   </Typography>
-                  <Typography color="textSecondary">Amount</Typography>
+                  <Typography color="textSecondary">Total</Typography>
                   <Typography component="p" className={classes.owner}>
-                    {fulfillmentAmount}
+                    Amount: {(totalAmount / Math.pow(10, 18))} {tokenName}
+                  </Typography>
+                  <Typography component="p" className={classes.owner}>
+                    Bounties: {totalBounties}
                   </Typography>
                 </CardContent>
             </Grid>
@@ -51,7 +53,7 @@ const Bounty = ({ classes, id, issuer, fulfiller, bountyData, fulfillmentAmount 
   </Grid>
 )
 
-const StyledBounty = withStyles(bountyStyles)(Bounty)
+const StyledLeaderboard = withStyles(bountyStyles)(Leaderboard)
 
 const bountiesStyles = theme =>
   createStyles({
@@ -60,21 +62,21 @@ const bountiesStyles = theme =>
     },
   })
 
-const Bounties = ({ classes, bounties }) => (
+const Leaderboards = ({ classes, leaderboards, userType }) => (
   <Grid container direction="column" spacing={16}>
     <Grid item>
       <Typography variant="title" className={classes.title}>
-        {bounties.length} Bounties
+        {leaderboards.length} {userType}
       </Typography>
     </Grid>
     <Grid item>
       <Grid container direction="row" spacing={16}>
-        {bounties.map(bounty => (
-          <StyledBounty key={bounty.id} {...bounty} />
+        {leaderboards.map(leaderboard => (
+          <StyledLeaderboard key={leaderboard.id} {...leaderboard} />
         ))}
       </Grid>
     </Grid>
   </Grid>
 )
 
-export default withStyles(bountiesStyles)(Bounties)
+export default withStyles(bountiesStyles)(Leaderboards)
