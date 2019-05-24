@@ -141,7 +141,6 @@ If you want to contribute to the indexing of Gitcoin bounty data, feel free to f
 * Please replace the `REACT_APP_GRAPHQL_ENDPOINT` variable under `frontend/.env` with one of the following APIs:
 
 * Latest release: [https://api.thegraph.com/subgraphs/name/santteegt/gitcoin](https://api.thegraph.com/subgraphs/name/santteegt/gitcoin)
-* Pendind relaase (**PLEASE SELECT THIS IN CASE PROCESSING IS STILL PENDING DUE TO CALLHANDLER**): [https://api.thegraph.com/subgraphs/id/QmNhcbWDoPpWtXn2Dx7KWEetVoWq4BNCgRCEUPe5e88Afo](https://api.thegraph.com/subgraphs/id/QmNhcbWDoPpWtXn2Dx7KWEetVoWq4BNCgRCEUPe5e88Afo)
 
 #### Subgraph deployment
 
