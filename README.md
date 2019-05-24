@@ -34,9 +34,81 @@ The following queries can be tested through the [subgraph playground](https://th
 
 * Leaderboard for Bounty Funders/Hunters
 
+Filter by address and DAI token
+
+```
+leaderboard(id: "0x224aba5d489675a7bd3ce07786fada466b46fa0fDAI") {
+    id
+    address
+    githubUsername
+    name
+    userType
+    tokenName
+    totalBounties
+    totalAmount
+  }
+```
+
 * Bounties
 
+```
+bounties() {
+    id
+    issuer
+    fulfiller
+    deadline
+    fulfillmentAmount
+    paysTokens
+    bountyStage
+    balance
+    bountyData {
+      title
+      description
+      issuerName
+      issuerEmail
+      issuerGithubUsername
+      issuerAddress
+      projectType
+      autoApproveWorkers
+      repoType
+      created
+      webReferenceURL
+      feeAmount
+      feeTxId
+      issueKeywords
+      experienceLevel
+      projectLength
+      bountyType
+      estimatedHours
+      reservedFor
+      tokenName
+    }
+    fulfillmentData {
+      description
+      githubPRLink
+      hoursWorked
+      email
+      githubUsername
+      address
+    }
+  }
+```
+
 * Kudos
+
+```
+ kudos() {
+    id
+    gen0
+    parent
+    owner
+    clonesAllowed
+    price
+    tokenURI
+    totalFees
+    totalRevenue
+  }
+```
 
 ## Hackathon Team Members
 
