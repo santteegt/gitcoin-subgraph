@@ -1,12 +1,19 @@
 # PoC frontend for Gitcoin Subgraph
 
-## Getting started
+Simple UI to demonstrate Gitcoin subgraph indexing capabilities such as bounties, bounty funders/hunters, and Kudos NFTs
 
-### Setup
+### Deployment
 
-#### Connect this dApp to the subgraph
+* To deploy this app:
+  ```sh
+  yarn && yarn build
+  yarn global add serve
+  yarn serve -s build
+  ```
 
-1. To start this app:
+#### Setup for development
+
+* To start this app:
    ```sh
    yarn install
    yarn start

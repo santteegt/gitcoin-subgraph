@@ -75,6 +75,7 @@ const BOUNTIES_QUERY = gql`
               issuerName
               issuerAddress
               issuerGithubUsername
+              webReferenceURL
           }
         }
     }
@@ -121,6 +122,7 @@ class App extends Component {
     return (
       <ApolloProvider client={client}>
         <div className="App">
+        <h1>Gitcoin Subgraph Demo</h1>
           <Grid container direction="column">
               <AppBar position="static">
                 <Tabs value={value} onChange={this.handleChange}>
@@ -150,7 +152,7 @@ class App extends Component {
                             variables={{
                               where: {
                                    ...(tokenFilter ? { tokenName: tokenFilter } : { }),
-                                   ...(addressFilter ? { address: addressFilter } : { }),
+                                   ...(addressFilter ? { address: addressFilter.toLowerCase() } : { }),
                                   ...{ userType: "FUNDER" }
                               },
                               orderBy: leadersOrder,
@@ -174,7 +176,7 @@ class App extends Component {
                             variables={{
                               where: {
                                    ...(tokenFilter ? { tokenName: tokenFilter } : { }),
-                                   ...(addressFilter ? { address: addressFilter } : { }),
+                                   ...(addressFilter ? { address: addressFilter.toLowerCase() } : { }),
                                   ...{ userType: "HUNTER" }
                               },
                               orderBy: leadersOrder,
@@ -206,7 +208,7 @@ class App extends Component {
                               query={BOUNTIES_QUERY}
                               variables={{
                                 where: {
-                                    ...(addressFilter ? { issuerAddress: addressFilter } : {}),
+                                    ...(addressFilter ? { issuerAddress: addressFilter.toLowerCase() } : {}),
                                 },
                                 orderBy: orderBy,
                                 limit: totalLeaders,

@@ -53,3 +53,25 @@ dataSources:
         # - event: PayoutIncreased(uint256,uint256)
         #   handler: handlePayoutIncreased
       file: ./src/mapping.ts
+  - kind: ethereum/contract
+    name: Kudos
+    network: mainnet
+    source:
+      address: "0x2aea4add166ebf38b63d09a75de1a7b94aa24163"
+      abi: Kudos
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.2
+      language: wasm/assemblyscript
+      entities:
+        - Kudo
+      abis:
+        - name: Kudos
+          file: ./abis/Kudos.json
+      eventHandlers:
+        - event: Transfer(address,address,uint256)
+          handler: handleKudosTransfer
+      callHandlers:
+        - function: mint(address,uint256,uint256,string)
+          handler: handleMint
+      file: ./src/mappingKudos.ts

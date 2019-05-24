@@ -88,6 +88,18 @@ type Leaderboard @entity {
   totalAmount: BigInt!
 }
 
+type Kudo @entity {
+  id: ID!
+  gen0: Boolean!
+  parent: BigInt!
+  owner: Bytes!
+  clonesAllowed: BigInt!
+  price: BigInt! #finney
+  tokenURI: String!
+  totalFees: BigInt! #finney
+  totalRevenue: BigInt! #finney
+}
+
 type BountyIssued @entity {
   id: ID!
   bountyId: BigInt! # uint256

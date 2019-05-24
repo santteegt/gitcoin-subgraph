@@ -36,7 +36,7 @@ const Leaderboard = ({ classes, id, address, githubUsername, name, userType, tok
                 <CardContent className={classes.info}>
                   <Typography color="textSecondary">ID</Typography>
                   <Typography component="p" className={classes.id}>
-                    {address}
+                    <a target="_blank" href={"https://etherscan.io/address/" + address}>{address}</a>
                   </Typography>
                   <Typography color="textSecondary">Total</Typography>
                   <Typography component="p" className={classes.owner}>

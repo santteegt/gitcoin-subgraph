@@ -1,6 +1,6 @@
 import React from 'react'
 import Avatar from 'react-avatar'
-import * as fetch from 'fetch'
+import * as fetch from 'node-fetch'
 import {
   Card,
   CardContent,
@@ -14,19 +14,28 @@ import {
 
 console.log('fetch', fetch)
 
-// const getKudosImage = (url) => {
-//     return new Promise((resolve, reject) => {
-//         url = url.replace('ipfs.', 'ipfs-2.')
-//
-//         fetch.fetchUrl(url, (error, meta, body)  => {
-//             if(error){
-//                 resolve("")
-//             }
-//             metadata = body.json()
-//             resolve(metadata.image)
-//         })
-//     })
-// }
+const getKudosImage = url => 
+  new Promise(async (resolve, reject) => {
+      url = url.replace('ipfs.', 'ipfs-2.')
+
+      try {
+        let res = await fetch(url, {
+          mode: 'cors',
+          headers: {
+            'Access-Control-Allow-Origin':'*'
+          }})
+        console.log(res)
+        if(!res) {
+            resolve("kudo.svg")
+        } else {
+          const metadata = res.json()
+          resolve(metadata.image)
+        }
+      } catch(err) {
+        resolve("kudo.svg")
+      }
+
+  })
 
 const kudoStyles = theme =>
   createStyles({
@@ -48,12 +57,12 @@ const kudoStyles = theme =>
 
 const KudoData = ({ classes, owner, price, tokenURI, totalFees, totalRevenue  }) => (
         <Grid container>
-            <Grid item xs={1}>
+            <Grid item xs={2}>
                 <img src="kudo.svg" width="125"/>
             </Grid>
-            <Grid item xs={11}>
+            <Grid item xs={10}>
             <CardContent>
-              <Typography color="textSecondary">Owner: {"https://etherscan.io/address/" + owner}</Typography>
+              <Typography color="textSecondary">Owner: <a href={'https://etherscan.io/address/' + owner}>{owner}</a></Typography>
               <Typography component="p">
                 Price: {(price / Math.pow(10, 3) )}
               </Typography>

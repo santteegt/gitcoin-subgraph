@@ -32,30 +32,33 @@ const bountyStyles = theme =>
 
 const BountyData = ({ classes, bountyData, fulfillmentAmount }) => (
         <Grid container>
-            <Grid item xs={1}>
+            <Grid item xs={2}>
                 {bountyData.issuerGithubUsername ? (<Avatar className={classes.image} githubHandle={bountyData.issuerGithubUsername} size="125" />) : (<Avatar className={classes.image} name={bountyData.issuerName} size="125" />)}
             </Grid>
-            <Grid item xs={11}>
+            <Grid item xs={10}>
             <CardContent>
-              <Typography color="textSecondary">Title: {bountyData.title}</Typography>
+              <Typography color="textSecondary"><h3>Title:</h3> {bountyData.title}</Typography>
               <Typography component="p">
-                Description: {bountyData.description}
+                <h3>Description:</h3> {bountyData.description}
               </Typography>
               <Typography component="p">
-                Amount: {(fulfillmentAmount / Math.pow(10, 18))} {bountyData.tokenName}
+                <strong>Amount:</strong> {(fulfillmentAmount / Math.pow(10, 18))} {bountyData.tokenName}
               </Typography>
               <Typography component="p">
-              Address: {bountyData.issuerAddress}
+              <strong>Address:</strong> <a target="_blank" href={"https://etherscan.io/address/" + bountyData.issuerAddress}>{bountyData.issuerAddress}</a>
               </Typography>
               {bountyData.issuerName &&
               (<Typography component="p">
-                Founder: {bountyData.issuerName}
+                <strong>Founder</strong>: {bountyData.issuerName}
               </Typography>)}
               {bountyData.issuerGithubUsername &&
               (<Typography component="p">
                 <a href={'https://github.com/' +bountyData.issuerGithubUsername}
                 ><img src="github-logo.png" width="25"/></a>
               </Typography>)}
+              <Typography component="p">
+                <a target="_blank" href={bountyData.webReferenceURL}>View Issue</a>
+              </Typography>
             </CardContent>
             </Grid>
         </Grid>
