@@ -159,6 +159,6 @@ yarn global add serve
 yarn serve -s build
 ```
 
-## Liceance
+## Licence
 
 [MIT](LICENSE)
