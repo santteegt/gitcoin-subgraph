@@ -12,7 +12,7 @@ dataSources:
       abi: Contract
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.2
+      apiVersion: 0.0.3
       language: wasm/assemblyscript
       entities:
         # - BountyIssued
@@ -38,7 +38,7 @@ dataSources:
         #   handler: handleBountyFulfilled
         # - event: FulfillmentUpdated(uint256,uint256)
         #   handler: handleFulfillmentUpdated
-        - event: FulfillmentAccepted(uint256,address,uint256)
+        - event: FulfillmentAccepted(uint256,indexed address,indexed uint256)
           handler: handleFulfillmentAccepted
         # - event: BountyKilled(uint256,address)
         #   handler: handleBountyKilled
@@ -61,7 +61,7 @@ dataSources:
       abi: Kudos
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.2
+      apiVersion: 0.0.3
       language: wasm/assemblyscript
       entities:
         - Kudo
@@ -69,7 +69,7 @@ dataSources:
         - name: Kudos
           file: ./abis/Kudos.json
       eventHandlers:
-        - event: Transfer(address,address,uint256)
+        - event: Transfer(indexed address,indexed address,indexed uint256)
           handler: handleKudosTransfer
       callHandlers:
         - function: mint(address,uint256,uint256,string)
